@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="iOS/BabySmash.iOS.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="BabySmash.Apps/BabySmash.cs">
+    <Files>
+      <File FileName="iOS/AppDelegate.cs" Line="8" Column="20" />
+      <File FileName="iOS/Main.cs" Line="8" Column="20" />
+      <File FileName="UITests/AppInitializer.cs" Line="7" Column="20" />
+      <File FileName="UITests/Tests.cs" Line="8" Column="20" />
+      <File FileName="Droid/MainActivity.cs" Line="11" Column="20" />
+      <File FileName="BabySmash.Apps/BabySmash.cs" Line="5" Column="25" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
