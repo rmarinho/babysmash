@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 
 using Xamarin.Forms;
 
@@ -6,6 +7,8 @@ namespace BabySmash.Core
 {
 	public class App : Application
 	{
+		
+		public static IContainer Container;
 		public App ()
 		{
 			// The root page of your application
