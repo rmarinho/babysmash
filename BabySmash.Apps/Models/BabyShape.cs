@@ -3,11 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace BabySmash.Core.Models
 {
 	public class BabyShape
 	{
+		public Color FillColor
+		{
+			get; set;
+		}
+
+		public Color BorderColor
+		{
+			get; set;
+		}
+
+		public Size Size
+		{
+			get; set;
+		}
+
+		public Point Position
+		{
+			get; set;
+		}
+
 		public virtual string AsString
 		{
 			get;
@@ -27,12 +48,9 @@ namespace BabySmash.Core.Models
 			get; set;
 		}
 
-		public override string AsString
+		public override string ToString()
 		{
-			get
-			{
-				return Letter.ToString();
-			}
+			return Letter.ToString();
 		}
 	}
 
@@ -48,16 +66,27 @@ namespace BabySmash.Core.Models
 			get; set;
 		}
 
-		public override string AsString
+		public override string ToString()
 		{
-			get
-			{
-				return Number.ToString();
-			}
+			return Number.ToString();
 		}
 	}
 
 	public class BabyShapeFigure : BabyShape
 	{
+		public BabyShapeFigure()
+		{
+			ShapeName = Utils.GetRandomShape();
+		}
+
+		public string ShapeName
+		{
+			get; set;
+		}
+
+		public override string ToString()
+		{
+			return ShapeName;
+		}
 	}
 }

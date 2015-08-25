@@ -38,6 +38,7 @@
     <Compile Include="BabySmash.cs" />
     <Compile Include="Services\IInteractionService.cs" />
     <Compile Include="Services\iSoundService.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>

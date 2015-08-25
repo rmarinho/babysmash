@@ -3,6 +3,7 @@ using BabySmash.Core.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Xamarin.Forms;
 
 namespace BabySmash.Core.ViewModels
 {
@@ -22,7 +23,6 @@ namespace BabySmash.Core.ViewModels
 		{
 			switch (e.Interaction) {
 				case Models.InteractionType.MouseClick:
-				AddShape();
 				break;
 				case Models.InteractionType.MouseMove:
 				break;
@@ -50,23 +50,20 @@ namespace BabySmash.Core.ViewModels
 			//could be a letter or number
 			if (key.Length == 1) {
 				// If a letter was pressed, display the letter.
-				if (Regex.IsMatch(key, @"^[a-zA-Z]+$")) 
+				if (Regex.IsMatch(key, @"^[a-zA-Z]+$"))
 					AddLetter(key[0]);
-			
+
 				// If a number is pressed, display the number.
 				if (Regex.IsMatch(key, @"^[0-9]+$")) {
 					int number;
 					if (int.TryParse(key, out number))
 						AddNumber(int.Parse(key));
 				}
-				return;
+			} else {
+				// Otherwise, display a random shape.
+				AddShape(new BabyShapeFigure());
 			}
-
-			if (key.ToLower().StartsWith("number")) {
-			}
-			// Otherwise, display a random shape.
-			AddShape();
-
+			
 			if (Shapes.Count >= Settings.Default.ClearAfter) {
 				Shapes.RemoveAt(0);
 			}
@@ -74,18 +71,41 @@ namespace BabySmash.Core.ViewModels
 
 		private void AddLetter(char letter)
 		{
-			Shapes.Add(new BabyShapeLetter(letter));
+			AddShape(new BabyShapeLetter(letter));
 		}
 
 		private void AddNumber(int number)
 		{
-			Shapes.Add(new BabyShapeNumber(number));
+			AddShape(new BabyShapeNumber(number));
 		}
 
-		private void AddShape()
+		private void AddShape(BabyShape shape)
 		{
-			Shapes.Add(new BabyShapeFigure());
+
+		    shape.BorderColor = Utils.GetRandomColor();
+			shape.FillColor = Utils.GetRandomColor();
+
+			//TODO: what should this be
+			var shapeWidth = 100;
+			var shapeHeight = 100;
+
+			//TODO: get this from DI
+			var availableWidth = 1000;
+			var availableHeight = 700;
+
+			shape.Size = new Size(shapeWidth, shapeHeight);
+			var x = Utils.RandomBetweenTwoNumbers(0, Convert.ToInt32(availableWidth - shape.Size.Width));
+			var y = Utils.RandomBetweenTwoNumbers(0, Convert.ToInt32(availableHeight - shape.Size.Height));
+			shape.Position = new Point(x, y);
+    
+			
+			
+			// var nameFunc = hashTableOfFigureGenerators[Utils.RandomBetweenTwoNumbers(0, hashTableOfFigureGenerators.Count - 1)];
+           //Canvas.SetLeft(f, Utils.RandomBetweenTwoNumbers(0, Convert.ToInt32(window.ActualWidth - f.Width)));
+            // Canvas.SetTop(f, Utils.RandomBetweenTwoNumbers(0, Convert.ToInt32(window.ActualHeight - f.Height)));
+			Shapes.Add(shape);
 		}
+		
 
 		string _helloMessage ="BabySmash! by Scott Hanselman with community contributions! - http://www.babysmash.com ";
 		public string HelloMessage
