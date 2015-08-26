@@ -19,10 +19,21 @@ namespace BabySmash.Core.Models
 		public Settings()
 		{
 			ClearAfter = 35;
+			ForceUppercase = true;
 		}
 		public int ClearAfter
 		{
 			get; set;
+		}
+		public bool ForceUppercase
+		{
+			get;
+			set;
+		}
+		public string FontFamily
+		{
+			get;
+			set;
 		}
 	}
 }
