@@ -4,23 +4,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BabySmash.Windows"
     xmlns:helpers="using:BabySmash.Windows.Helpers"
+    xmlns:controls="using:BabySmash.Windows.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.Resources>
-            <DataTemplate x:Key="itemTemplate">
-                <StackPanel Padding="20" Background="Blue">
+            <ResourceDictionary>
+                <DataTemplate x:Key="itemTemplate">
+                    <StackPanel Padding="20" Background="Blue">
 
-                    <TextBlock  Text="{Binding}" FontSize="16" Foreground="White"></TextBlock>
-                </StackPanel>
-            </DataTemplate>
+                        <TextBlock  Text="{Binding}" FontSize="16" Foreground="White"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+
+                <DataTemplate x:Key="glowText">
+                    <controls:GlowTextCustomControl GlowAmount="10" MaxGlowAmount="30" 
+                                                    AnimateGlow="True"
+                                                    Text="{Binding Letter}"
+                                                    TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
+                                                    GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
+                                                    />
+                    <!--<controls:CoolLetter Character="{Binding Letter}" BrushColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" />-->
+                </DataTemplate>
+
+            </ResourceDictionary>
+           
         </Grid.Resources>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Padding="20">
             <TextBlock Text="{Binding HelloMessage}"></TextBlock>     
         </StackPanel>
-        <ItemsControl ItemsSource="{Binding Shapes}" ItemTemplate="{StaticResource itemTemplate}">
+        <ItemsControl ItemsSource="{Binding Shapes}" ItemTemplate="{StaticResource glowText}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />

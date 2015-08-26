@@ -3,6 +3,7 @@ using BabySmash.Core.ViewModels;
 using BabySmash.Core.Models;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using System.Globalization;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -13,6 +14,8 @@ namespace BabySmash.Windows
 	/// </summary>
 	public sealed partial class MainPage : Page
 	{
+		private readonly ILifetimeScope scope;
+
 		public MainViewModel ViewModel
 		{
 			get
@@ -20,16 +23,20 @@ namespace BabySmash.Windows
 				return this.DataContext as MainViewModel;
 			}
 		}
+		
 		public MainPage()
 		{
 			this.InitializeComponent();
+			this.Unloaded += MainPageUnloaded;
+			
+			this.scope = BabySmash.Core.App.Container.BeginLifetimeScope();
+			DataContext = scope.Resolve<MainViewModel>();
+		
+		}
 
-			using (var scope = BabySmash.Core.App.Container.BeginLifetimeScope()) {
-				// Resolve services from a scope that is a child
-				// of the root container.
-				DataContext = scope.Resolve<MainViewModel>();
-			}
-
+		private void MainPageUnloaded(object sender, global::Windows.UI.Xaml.RoutedEventArgs e)
+		{
+			this.scope.Dispose();
 		}
 	}
 }

@@ -3,6 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BabySmash.Windows"
+    xmlns:helpers="using:BabySmash.Windows.Helpers"
     RequestedTheme="Light">
-
+    <Application.Resources>
+        <ResourceDictionary>
+            <helpers:FormsColorConverter x:Key="formsColorConverter"></helpers:FormsColorConverter>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>
