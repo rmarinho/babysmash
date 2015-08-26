@@ -76,9 +76,10 @@ namespace BabySmash.Windows
                 Window.Current.Content = rootFrame;
 
 				Xamarin.Forms.Forms.Init(e);
+
 				var app = new BabySmash.Core.App();
-				ContainerBuilder builder = new ContainerBuilder();
-				builder.Register((s) =>  new InteractionService(Window.Current.Content)).As<IInteractionService>();
+				var builder = new ContainerBuilder();
+				builder.RegisterType<InteractionService>().As<IInteractionService>();
 				Bootstrapper.Run(builder);
             }
 

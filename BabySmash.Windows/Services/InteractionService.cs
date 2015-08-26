@@ -7,48 +7,48 @@ using Windows.UI.Xaml;
 
 namespace BabySmash.Windows.Services
 {
-	public class InteractionService : IInteractionService
+	public class InteractionService : IInteractionService, IDisposable
 	{
-		bool isCtrlKeyPressed;
-
-		public InteractionService(UIElement page)
+		private bool isCtrlKeyPressed;
+		private bool disposed;
+		private bool isKeyboardShowing;
+		private bool isUsingSoftKeyboard;
+		public InteractionService()
 		{
-			page.KeyUp += KeyUp;
-			page.KeyDown += KeyDown;
+			Window.Current.CoreWindow.KeyUp += KeyUp;
+			Window.Current.CoreWindow.KeyDown += KeyDown;
 		}
 
-		private void KeyDown(object sender, global::Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+		private void KeyDown(global::Windows.UI.Core.CoreWindow sender, global::Windows.UI.Core.KeyEventArgs e)
 		{
 			char k = (char)0;
-			if (e.Key == VirtualKey.Control)
+			if (e.VirtualKey == VirtualKey.Control)
 				this.isCtrlKeyPressed = true;
 			else if (isCtrlKeyPressed) {
-				switch (e.Key) {
+				switch (e.VirtualKey) {
 					case VirtualKey.X:
 					OnInteractionOccured( new InteractionEventArgs(InteractionType.Exit) );
 					break;
 				}
 			}
-
-		
-
-			if (e.Key >= VirtualKey.Number0 && e.Key <= VirtualKey.Number9)
+			
+			if (e.VirtualKey >= VirtualKey.Number0 && e.VirtualKey <= VirtualKey.Number9)
             {
-                k =   (char) ('0' + e.Key - VirtualKey.Number0);
+                k =   (char) ('0' + e.VirtualKey - VirtualKey.Number0);
             }
 
-			if (e.Key >= VirtualKey.NumberPad0 && e.Key <= VirtualKey.NumberPad9)
+			if (e.VirtualKey >= VirtualKey.NumberPad0 && e.VirtualKey <= VirtualKey.NumberPad9)
             {
-                k =   (char) ('0' + e.Key - VirtualKey.NumberPad0);
+                k =   (char) ('0' + e.VirtualKey - VirtualKey.NumberPad0);
             }
 
-         	OnInteractionOccured( new InteractionEventArgs(InteractionType.KeyPress) { Key = k == 0 ? e.Key.ToString() : k.ToString() });
-   
+         	OnInteractionOccured( new InteractionEventArgs(InteractionType.KeyPress) { Key = k == 0 ? e.VirtualKey.ToString() : k.ToString() });
 		}
 
-		private void KeyUp(object sender, global::Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+
+		private void KeyUp(global::Windows.UI.Core.CoreWindow sender, global::Windows.UI.Core.KeyEventArgs e)
 		{
-			 if (e.Key == VirtualKey.Control) isCtrlKeyPressed = true;
+			 if (e.VirtualKey == VirtualKey.Control) isCtrlKeyPressed = true;
 		}
 
 		private void OnInteractionOccured(InteractionEventArgs eventArgs)
@@ -69,6 +69,45 @@ namespace BabySmash.Windows.Services
 		public void HandleMouseUp()
 		{
 			throw new NotImplementedException();
+		}
+
+		public bool IsHardKeyboardPresent
+		{
+			get
+			{
+				var keyboardCaps = new global::Windows.Devices.Input.KeyboardCapabilities();
+				return keyboardCaps.KeyboardPresent == 0;
+			}
+		}
+
+		private void ShowsoftKeyboard(bool show)
+		{
+		    if (this.IsHardKeyboardPresent && show)
+            {
+				this.isUsingSoftKeyboard = true;
+				//show softkeyboard
+            }
+		}
+
+        void KeyboardShowing(global::Windows.UI.ViewManagement.InputPane sender, global::Windows.UI.ViewManagement.InputPaneVisibilityEventArgs args)
+        {
+        }
+
+        void HekyboardHiding(global::Windows.UI.ViewManagement.InputPane sender, global::Windows.UI.ViewManagement.InputPaneVisibilityEventArgs args)
+        {
+        }
+
+		
+		public void Dispose()
+		{
+			if (!this.disposed) {
+				this.disposed = true;
+				Window.Current.CoreWindow.KeyUp -= KeyUp;
+				Window.Current.CoreWindow.KeyDown -= KeyDown;
+				if (this.isUsingSoftKeyboard) {
+					//get rid of soft keyboard events
+				}
+			}
 		}
 	}
 }

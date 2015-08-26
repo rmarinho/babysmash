@@ -12,6 +12,11 @@ namespace BabySmash.Core.Services
 		event EventHandler<InteractionEventArgs> InteractionOccured;
 		void HandleMouseDown();
 		void HandleMouseUp();
+
+		bool IsHardKeyboardPresent
+		{
+			get;
+		}
 	}
 
 	public class InteractionEventArgs : EventArgs
