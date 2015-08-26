@@ -14,7 +14,7 @@ namespace BabySmash.Core.Models
 			get; set;
 		}
 
-		public Color BorderColor
+		public Color StrokeColor
 		{
 			get; set;
 		}
@@ -29,11 +29,6 @@ namespace BabySmash.Core.Models
 			get; set;
 		}
 
-		public virtual string AsString
-		{
-			get;
-		}
-		
 	}
 
 	public class BabyShapeLetter : BabyShape

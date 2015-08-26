@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace BabySmash.Core
 {
-	internal static class Utils
+	public static class Utils
 	{
 		private static readonly List<string> shapes;
 		private static readonly Dictionary<Color, string> brushToString;

@@ -82,7 +82,7 @@ namespace BabySmash.Core.ViewModels
 		private void AddShape(BabyShape shape)
 		{
 
-		    shape.BorderColor = Utils.GetRandomColor();
+		    shape.StrokeColor = Utils.GetRandomColor();
 			shape.FillColor = Utils.GetRandomColor();
 
 			//TODO: what should this be
