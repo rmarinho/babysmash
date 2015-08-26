@@ -158,9 +158,9 @@ namespace BabySmash.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public string UseEffects {
+        public bool UseEffects {
             get {
-                return ((string)(this["UseEffects"]));
+                return ((bool)(this["UseEffects"]));
             }
             set {
                 this["UseEffects"] = value;
