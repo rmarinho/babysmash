@@ -80,6 +80,7 @@ namespace BabySmash.Windows
 				var app = new BabySmash.Core.App();
 				var builder = new ContainerBuilder();
 				builder.RegisterType<InteractionService>().As<IInteractionService>();
+				builder.RegisterType<SpeakService>().As<ISpeakService>();
 				Bootstrapper.Run(builder);
             }
 

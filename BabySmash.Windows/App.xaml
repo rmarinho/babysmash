@@ -7,6 +7,7 @@
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
+            <MediaElement x:Name="mediaElement"></MediaElement>
             <helpers:FormsColorConverter x:Key="formsColorConverter"></helpers:FormsColorConverter>
         </ResourceDictionary>
     </Application.Resources>

@@ -10,13 +10,19 @@ namespace BabySmash.Core.ViewModels
 	public class MainViewModel : BaseViewModel
 	{
 		private IInteractionService interactionService;
-		public MainViewModel(IInteractionService interactionService)
+		private ISpeakService speakService;
+		public MainViewModel(IInteractionService interactionService, ISpeakService speakService)
 		{
 			if (interactionService == null)
 				throw new ArgumentNullException(nameof(interactionService));
 
+			if (speakService == null)
+				throw new ArgumentNullException(nameof(speakService));
+
 			this.interactionService = interactionService;
 			this.interactionService.InteractionOccured += InteractionService_InteractionOccured;
+
+			this.speakService = speakService;
 		}
 
 		private void InteractionService_InteractionOccured(object sender, InteractionEventArgs e)
@@ -69,9 +75,10 @@ namespace BabySmash.Core.ViewModels
 			}
 		}
 
-		private void AddLetter(char letter)
+		private async void AddLetter(char letter)
 		{
 			AddShape(new BabyShapeLetter(letter));
+			await speakService.SpeakText(letter.ToString());
 		}
 
 		private void AddNumber(int number)

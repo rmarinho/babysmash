@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BabySmash.Core.Services
 {
-	interface iSoundService
+	public interface ISpeakService
 	{
+		Task SpeakText(string text);
+		Task SpeakUriStream(Uri url);
 	}
 }
