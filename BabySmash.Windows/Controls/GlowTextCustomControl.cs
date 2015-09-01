@@ -11,12 +11,14 @@ using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace BabySmash.Windows.Controls
 {
 	   public sealed class GlowTextCustomControl : UserControl
     {
+		
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
@@ -53,7 +55,7 @@ namespace BabySmash.Windows.Controls
             set { SetValue(GlowColorProperty, value); }
         }
 
-		  public static readonly DependencyProperty AnimateGlowProperty =
+		public static readonly DependencyProperty AnimateGlowProperty =
             DependencyProperty.Register(
                 "AnimateGlow",
                 typeof(bool),
@@ -74,7 +76,7 @@ namespace BabySmash.Windows.Controls
                 typeof(GlowTextCustomControl),
                 new PropertyMetadata(Colors.White, new PropertyChangedCallback(OnPropertyChanged)));
 
-        public static readonly DependencyProperty GlowAmountProperty =
+		public static readonly DependencyProperty GlowAmountProperty =
             DependencyProperty.Register(
                 "GlowAmount",
                 typeof(double),
@@ -105,14 +107,38 @@ namespace BabySmash.Windows.Controls
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            canvas = new CanvasControl();
-			
-            canvas.Draw += OnDraw;
-            Content = canvas;
-        }
+		{
+			canvas = new CanvasControl();
+			Storyboard s = GetInitialAnimation();
+			s.Begin();
+			canvas.Draw += OnDraw;
+			Content = canvas;
+		}
 
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+		private Storyboard GetInitialAnimation()
+		{
+			var s = new Storyboard();
+			var tg = new TransformGroup();
+			canvas.RenderTransform = tg;
+			canvas.RenderTransformOrigin = new Point(0.5, 0.5);
+			AddRotationAnimation(tg, s);
+			return s;
+		}
+
+		private static void AddRotationAnimation(TransformGroup tg, Storyboard s)
+		{
+			var rotation = new RotateTransform();
+			tg.Children.Add(rotation);
+			Storyboard.SetTarget(s, rotation);
+			Storyboard.SetTargetProperty(s, "Angle");
+
+			s.Children.Add(
+				   new DoubleAnimation {
+					   From = 0, To = 360, Duration = new Duration(new TimeSpan(0, 0, 2)), EasingFunction = new BounceEase { Bounces = 2, EasingMode = EasingMode.EaseIn }
+				   });
+		}
+
+		private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             // Explicitly remove references to allow the Win2D controls to get garbage collected
             if (canvas != null)
@@ -129,17 +155,17 @@ namespace BabySmash.Windows.Controls
 				return;
 
 			if (instance.AnimateGlow) {
-				instance.Animate2(instance.GlowAmount, instance.MaxGlowAmount);
+				instance.BeginAnimateGlow(instance.GlowAmount, instance.MaxGlowAmount);
 			}
 
 		}
 
-		private void Animate2(double from, double to)
+		private void BeginAnimateGlow(double from, double to)
 		{
 			DoubleAnimation ani = new DoubleAnimation() {
 				From = from,
 				To = to,
-				Duration = new Duration(new TimeSpan(0, 0, 10)),
+				Duration = new Duration(new TimeSpan(0, 0, 1)),
 				EnableDependentAnimation = true,
 				RepeatBehavior =  RepeatBehavior.Forever,
 				AutoReverse = true,
@@ -183,7 +209,7 @@ namespace BabySmash.Windows.Controls
 
             var device = CanvasDevice.GetSharedDevice();
 
-            var layout = CreateTextLayout(device, availableSize);
+            var layout = CreateTextLayout(device, availableSize, (float)FontSize);
             var bounds = layout.LayoutBounds;
 
             return new Size(Math.Min(availableSize.Width, bounds.Width + ExpandAmount), Math.Min(availableSize.Height, bounds.Height + ExpandAmount));
@@ -201,7 +227,7 @@ namespace BabySmash.Windows.Controls
 
             var offset = (float)(ExpandAmount / 2);           
 
-            using (var textLayout = CreateTextLayout(ds, size))
+            using (var textLayout = CreateTextLayout(ds, size, (float)FontSize))
             using (var textCommandList = new CanvasCommandList(ds))
             {
                 using (var textDs = textCommandList.CreateDrawingSession())
@@ -216,12 +242,13 @@ namespace BabySmash.Windows.Controls
             }
         }
 
-        private CanvasTextLayout CreateTextLayout(ICanvasResourceCreator resourceCreator, Size size)
+        private CanvasTextLayout CreateTextLayout(ICanvasResourceCreator resourceCreator, Size size, float fontSize)
         {
             var format = new CanvasTextFormat()
             {
                 HorizontalAlignment = GetCanvasHorizontalAlignemnt(),
-                VerticalAlignment = GetCanvasVerticalAlignment()
+                VerticalAlignment = GetCanvasVerticalAlignment(),
+				FontSize = fontSize,
             };
 
             return new CanvasTextLayout(

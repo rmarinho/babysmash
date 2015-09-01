@@ -22,6 +22,7 @@
                 <DataTemplate x:Key="glowText">
                     <controls:GlowTextCustomControl GlowAmount="10" MaxGlowAmount="30" 
                                                     AnimateGlow="True"
+                                                    FontSize="150"
                                                     Text="{Binding Letter}"
                                                     TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
