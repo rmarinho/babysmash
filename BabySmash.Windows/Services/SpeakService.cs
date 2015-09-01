@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BabySmash.Core.Services;
+using System;
 using System.Threading.Tasks;
-using BabySmash.Core.Services;
 using Windows.Media.SpeechSynthesis;
-using Windows.Media.Playback;
-using Windows.UI.Xaml.Controls;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Controls;
 
 namespace BabySmash.Windows.Services
 {
@@ -27,7 +23,7 @@ namespace BabySmash.Windows.Services
 
 		public async Task SpeakText(string text)
 		{
-			using(var stream = await synthesizer.SynthesizeTextToStreamAsync(text)) {
+			using(var stream = await this.synthesizer.SynthesizeTextToStreamAsync(text)) {
 				await Play(stream, stream.ContentType);
 			}
 		}
@@ -44,15 +40,15 @@ namespace BabySmash.Windows.Services
 		
 		private async Task Play(IRandomAccessStream stream, string mimeType, Uri url = null)
 		{
-			playCount++;
-			tcsPlaying = new TaskCompletionSource<bool>();
+			this.playCount++;
+			this.tcsPlaying = new TaskCompletionSource<bool>();
 			if(url != null)
 				this.mediaElement.Source = url;
 			else
 				this.mediaElement.SetSource(stream, mimeType);
-			mediaElement.Play();
+			this.mediaElement.Play();
 			try {
-				await tcsPlaying.Task;
+				await this.tcsPlaying.Task;
 			}
 			catch(Exception e) {
 				//TODO: handle this here? retry ? 
@@ -62,14 +58,14 @@ namespace BabySmash.Windows.Services
 
 		private void MediaElementMediaFailed(object sender, global::Windows.UI.Xaml.ExceptionRoutedEventArgs e)
 		{
-			playCount--;
-			tcsPlaying.TrySetException(new Exception("Media failed"));
+			this.playCount--;
+			this.tcsPlaying.TrySetException(new Exception("Media failed"));
 		}
 
 		private void MediaElementMediaEnded(object sender, global::Windows.UI.Xaml.RoutedEventArgs e)
 		{
-			playCount--;
-			tcsPlaying.TrySetResult(true);
+			this.playCount--;
+			this.tcsPlaying.TrySetResult(true);
 		}
 
 
@@ -79,8 +75,8 @@ namespace BabySmash.Windows.Services
 				this.synthesizer.Dispose();
 				this.synthesizer = null;
 			}
-			if(!tcsPlaying.Task.IsCompleted) {
-				tcsPlaying.TrySetException(new Exception("SpeakService was dispoesed"));
+			if(!this.tcsPlaying.Task.IsCompleted) {
+				this.tcsPlaying.TrySetException(new Exception("SpeakService was disposed"));
 			}
 			if(this.mediaElement.CurrentState == global::Windows.UI.Xaml.Media.MediaElementState.Playing)
 				this.mediaElement.Stop();
