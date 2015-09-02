@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas;
+﻿using BabySmash.Core.Models;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -106,14 +107,47 @@ namespace BabySmash.Windows.Controls
             Unloaded += UserControl_Unloaded;
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			canvas = new CanvasControl();
-			Storyboard s = GetInitialAnimation();
-			s.Begin();
+			if(Settings.Default.UseAnimations) {
+				var sShow = GetInitialAnimation();
+				sShow.Begin();
+			}
 			canvas.Draw += OnDraw;
 			Content = canvas;
+			if(Settings.Default.UseAnimations && Settings.Default.FadeAway ) {
+				var sFade = CreateDPAnimation(this, "Opacity",
+						  new Duration(TimeSpan.FromSeconds(Settings.Default.FadeAfter)), 1, 0);
+				sFade.Begin();
+				sFade.Completed += SFade_Completed;
+			}
 		}
+
+		private void SFade_Completed(object sender, object e)
+		{
+			Dispose();
+			this.IsEnabled = false;
+		}
+
+		public static Storyboard CreateDPAnimation(UIElement shape,
+                                                   string dp, Duration duration, double from, double to)
+        {
+            var st = new Storyboard();
+        
+            var d = new DoubleAnimation
+            {
+                From = from,
+                To = to,
+                Duration = duration,
+                AutoReverse = false
+            };
+
+            st.Children.Add(d);
+            Storyboard.SetTarget(d, shape);
+            Storyboard.SetTargetProperty(d, dp);
+            return st;
+        }
 
 		private Storyboard GetInitialAnimation()
 		{
@@ -129,6 +163,7 @@ namespace BabySmash.Windows.Controls
 		{
 			var rotation = new RotateTransform();
 			tg.Children.Add(rotation);
+
 			Storyboard.SetTarget(s, rotation);
 			Storyboard.SetTargetProperty(s, "Angle");
 
@@ -139,14 +174,18 @@ namespace BabySmash.Windows.Controls
 		}
 
 		private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            // Explicitly remove references to allow the Win2D controls to get garbage collected
-            if (canvas != null)
-            {
-                canvas.RemoveFromVisualTree();
-                canvas = null;
-            }
-        }
+		{
+			Dispose();
+		}
+
+		private void Dispose()
+		{
+			// Explicitly remove references to allow the Win2D controls to get garbage collected
+			if(canvas != null) {
+				canvas.RemoveFromVisualTree();
+				canvas = null;
+			}
+		}
 
 		private static void OnAnimateGlowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -154,7 +193,7 @@ namespace BabySmash.Windows.Controls
 			if (instance == null)
 				return;
 
-			if (instance.AnimateGlow) {
+			if (instance.AnimateGlow && Settings.Default.UseEffects && Settings.Default.UseAnimations) {
 				instance.BeginAnimateGlow(instance.GlowAmount, instance.MaxGlowAmount);
 			}
 
@@ -234,10 +273,11 @@ namespace BabySmash.Windows.Controls
                 {                     
                     textDs.DrawTextLayout(textLayout, 0, 0, GlowColor);
                 }
-
-                glowEffectGraph.Setup(textCommandList, amount);
-                ds.DrawImage(glowEffectGraph.Output, offset, offset);
-
+				if(Settings.Default.UseEffects) {
+					glowEffectGraph.Setup(textCommandList, amount);
+					ds.DrawImage(glowEffectGraph.Output, offset, offset);
+				}
+             
                 ds.DrawTextLayout(textLayout, offset, offset, TextColor);
             }
         }

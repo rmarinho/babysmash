@@ -9,6 +9,10 @@ namespace BabySmash.Core.Models
 {
 	public class BabyShape
 	{
+		public BabyShape()
+		{
+			IsVisible = true;
+		}
 		public Color FillColor
 		{
 			get; set;
@@ -29,11 +33,27 @@ namespace BabySmash.Core.Models
 			get; set;
 		}
 
+
+		private bool isVisible;
+
+		public bool IsVisible
+		{
+			get
+			{
+				return isVisible;
+			}
+			set
+			{
+				isVisible = value;
+			}
+		}
+
+
 	}
 
 	public class BabyShapeLetter : BabyShape
 	{
-		public BabyShapeLetter(char letter)
+		public BabyShapeLetter(char letter) 
 		{
 			this.Letter = letter;
 		}

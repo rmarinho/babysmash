@@ -20,6 +20,12 @@ namespace BabySmash.Core.Models
 		{
 			ClearAfter = 35;
 			ForceUppercase = true;
+			Speak = true;
+			UseEffects = false;
+			UseAnimations = true;
+			FadeAfter = 30;
+			FadeAway = true;
+			FontSize = 150;
 		}
 		public int ClearAfter
 		{
@@ -34,6 +40,40 @@ namespace BabySmash.Core.Models
 		{
 			get;
 			set;
+		}
+
+		public bool Speak
+		{
+			get;
+			set;
+		}
+
+		public bool UseEffects
+		{
+			get;
+			set;
+		}
+
+		public bool UseAnimations
+		{
+			get;
+			set;
+		}
+
+		public int FadeAfter
+		{
+			get;
+			set;
+		}
+		public bool FadeAway
+		{
+			get;
+			set;
+		}
+		public int FontSize
+		{
+			get;
+			internal set;
 		}
 	}
 }
