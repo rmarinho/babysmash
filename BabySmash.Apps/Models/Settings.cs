@@ -21,7 +21,7 @@ namespace BabySmash.Core.Models
 			ClearAfter = 35;
 			ForceUppercase = true;
 			Speak = true;
-			UseEffects = false;
+			UseEffects = true;
 			UseAnimations = true;
 			FadeAfter = 30;
 			FadeAway = true;
