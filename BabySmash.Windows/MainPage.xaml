@@ -25,7 +25,7 @@
                                                     AnimateGlow="True"
                                                     FontSize="150"
                                                     IsEnabled="{Binding IsVisible,Mode=TwoWay}"
-                                                    Text="{Binding Letter}"
+                                                    Text="{Binding}"
                                                     TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
                                                     />

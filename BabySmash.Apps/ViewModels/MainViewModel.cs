@@ -8,6 +8,7 @@ using System.Linq;
 using static BabySmash.Core.Utils;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace BabySmash.Core.ViewModels
 {
@@ -40,14 +41,6 @@ namespace BabySmash.Core.ViewModels
 
 			this.interactionService.InteractionOccured += InteractionService_InteractionOccured;
 
-			//var assembly = typeof(MainViewModel).GetTypeInfo().Assembly;
-			//Stream stream = assembly.GetManifestResourceStream("BabySmash.Core.Data.ssml_default.xml");
-			//string text = "";
-			//using(var reader = new System.IO.StreamReader(stream)) {
-			//	text = reader.ReadToEnd();
-			//}
-
-			//this.speakService.SpeakSSML(text);
 		}
 
 	
@@ -94,11 +87,8 @@ namespace BabySmash.Core.ViewModels
 				SetField(ref _shapes, value);
 			}
 		}
-
 	
-
-
-		private void InteractionService_InteractionOccured(object sender, InteractionEventArgs e)
+		private async void InteractionService_InteractionOccured(object sender, InteractionEventArgs e)
 		{
 			switch (e.Interaction) {
 				case Models.InteractionType.MouseClick:
@@ -106,7 +96,7 @@ namespace BabySmash.Core.ViewModels
 				case Models.InteractionType.MouseMove:
 				break;
 				case Models.InteractionType.KeyPress:
-				ProcessKey(e.Key);
+				await ProcessKey(e.Key);
 				break;
 				case Models.InteractionType.Exit:
 				Clear();
@@ -121,7 +111,7 @@ namespace BabySmash.Core.ViewModels
 			Shapes.Clear();
 		}
 
-		private void ProcessKey(string key)
+		private async Task ProcessKey(string key)
 		{
 			if(string.IsNullOrEmpty(key))
 				return;
@@ -130,17 +120,17 @@ namespace BabySmash.Core.ViewModels
 			if(key.Length == 1) {
 				// If a letter was pressed, display the letter.
 				if(Regex.IsMatch(key, @"^[a-zA-Z]+$"))
-					AddLetter(key[0]);
+					await AddLetter(key[0]);
 
 				// If a number is pressed, display the number.
 				if(Regex.IsMatch(key, @"^[0-9]+$")) {
 					int number;
 					if(int.TryParse(key, out number))
-						AddNumber(int.Parse(key));
+						await AddNumber(int.Parse(key));
 				}
 			} else {
 				// Otherwise, display a random shape.
-				AddShape(new BabyShapeFigure());
+				await AddShape(new BabyShapeFigure());
 			}
 
 			CheckShapesToRemove();
@@ -161,20 +151,19 @@ namespace BabySmash.Core.ViewModels
 			}
 		}
 
-		private async void AddLetter(char letter)
+		private Task  AddLetter(char letter)
 		{
 			var shape = new BabyShapeLetter(letter);
-			AddShape(shape);
-			if(Settings.Default.Speak)
-				await this.speakService.SpeakSSML(this.languageService.GetLanguageTextForLetter(shape.ToString()));
+			return AddShape(shape);
 		}
 
-		private void AddNumber(int number)
+		private Task AddNumber(int number)
 		{
-			AddShape(new BabyShapeNumber(number));
+			var shape = new BabyShapeNumber(number);
+			return AddShape(shape);
 		}
 
-		private void AddShape(BabyShape shape)
+		private async Task AddShape(BabyShape shape)
 		{
 
 		    shape.StrokeColor = GetRandomColor();
@@ -197,6 +186,8 @@ namespace BabySmash.Core.ViewModels
 			
 			// var nameFunc = hashTableOfFigureGenerators[Utils.RandomBetweenTwoNumbers(0, hashTableOfFigureGenerators.Count - 1)];
 			Shapes.Add(shape);
+			if(Settings.Default.Speak)
+				await this.speakService.SpeakSSML(this.languageService.GetLanguageTextForLetter(shape.ToString()));
 		}
 
 		
