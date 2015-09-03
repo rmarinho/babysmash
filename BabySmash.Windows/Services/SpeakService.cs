@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using Windows.Media.SpeechSynthesis;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
+using BabySmash.Core.Models;
+using System.Linq;
 
 namespace BabySmash.Windows.Services
 {
-	public class SpeakService : ISpeakService, IDisposable
+	public class SpeakService : ISpeakService
 	{
 		public SpeakService()
 		{
@@ -19,6 +21,11 @@ namespace BabySmash.Windows.Services
 			this.mediaElement.MediaFailed += MediaElementMediaFailed;
 		
 			this.synthesizer = new SpeechSynthesizer();
+		}
+
+		public void SetLanguage(Language language)
+		{
+			this.synthesizer.Voice = SpeechSynthesizer.AllVoices.FirstOrDefault(v => v.Id == language.Id);
 		}
 
 		public async Task SpeakText(string text)
@@ -84,5 +91,6 @@ namespace BabySmash.Windows.Services
 			this.mediaElement.MediaEnded -= MediaElementMediaEnded;
 			this.mediaElement.MediaFailed -= MediaElementMediaFailed;
 		}
+		
 	}
 }

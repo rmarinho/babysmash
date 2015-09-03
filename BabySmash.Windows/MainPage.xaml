@@ -5,6 +5,7 @@
     xmlns:local="using:BabySmash.Windows"
     xmlns:helpers="using:BabySmash.Windows.Helpers"
     xmlns:controls="using:BabySmash.Windows.Controls"
+    xmlns:views="using:BabySmash.Windows.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -56,9 +57,7 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-        <Canvas Name="mouseDragCanvas"/>
-        <Canvas Name="mouseCursorCanvas"/>
 
-        
+        <views:SettingsView Width="200" Height="300" HorizontalAlignment="Right" VerticalAlignment="Top"></views:SettingsView>
     </Grid>
 </Page>

@@ -8,6 +8,7 @@ namespace BabySmash.Core
 		public static void Run(ContainerBuilder builder)
 		{
 			builder.RegisterType<MainViewModel>();
+			builder.RegisterType<SettingsViewModel>();
 			var container = builder.Build();
 			App.Container = container;
 		}

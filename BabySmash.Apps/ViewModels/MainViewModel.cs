@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
+using System.Linq;
 using static BabySmash.Core.Utils;
 
 namespace BabySmash.Core.ViewModels
@@ -13,24 +14,32 @@ namespace BabySmash.Core.ViewModels
 		private const int timerDelay = 30 * 1000;
 		private IInteractionService interactionService;
 		private ISpeakService speakService;
+		private ILanguageService languageService;
 		private Timer timer;
-		public MainViewModel(IInteractionService interactionService, ISpeakService speakService)
+		public MainViewModel(IInteractionService interactionService, ISpeakService speakService, ILanguageService languageService)
 		{
+			
+			if(interactionService == null)
+				throw new ArgumentNullException(nameof(interactionService));
+
+			if(speakService == null)
+				throw new ArgumentNullException(nameof(speakService));
+
+			if(languageService == null)
+				throw new ArgumentNullException(nameof(languageService));
+
+			this.interactionService = interactionService;
+			this.speakService = speakService;
+			this.languageService = languageService;
+
 			this.timer = new Timer((obj) => {
 				CheckShapesToRemove();
 			}, null, timerDelay, timerDelay);
 
-			if (interactionService == null)
-				throw new ArgumentNullException(nameof(interactionService));
-
-			if (speakService == null)
-				throw new ArgumentNullException(nameof(speakService));
-
-			this.interactionService = interactionService;
 			this.interactionService.InteractionOccured += InteractionService_InteractionOccured;
 
-			this.speakService = speakService;
 		}
+	
 		public void Dispose()
 		{
 			if(this.timer != null) {
@@ -62,7 +71,7 @@ namespace BabySmash.Core.ViewModels
 		}
 
 
-		ObservableCollection<BabyShape> _shapes = new ObservableCollection<BabyShape>();
+		private ObservableCollection<BabyShape> _shapes = new ObservableCollection<BabyShape>();
 		public ObservableCollection<BabyShape> Shapes
 		{
 			get
@@ -74,6 +83,9 @@ namespace BabySmash.Core.ViewModels
 				SetField(ref _shapes, value);
 			}
 		}
+
+	
+
 
 		private void InteractionService_InteractionOccured(object sender, InteractionEventArgs e)
 		{
