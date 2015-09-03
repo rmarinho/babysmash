@@ -91,6 +91,12 @@ namespace BabySmash.Windows.Services
 			this.mediaElement.MediaEnded -= MediaElementMediaEnded;
 			this.mediaElement.MediaFailed -= MediaElementMediaFailed;
 		}
-		
+
+		public async Task SpeakSSML(string text)
+		{
+			using(var stream = await this.synthesizer.SynthesizeSsmlToStreamAsync(text)) {
+				await Play(stream, stream.ContentType);
+			}
+		}
 	}
 }

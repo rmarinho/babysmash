@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using System.Linq;
 using static BabySmash.Core.Utils;
+using System.IO;
+using System.Reflection;
 
 namespace BabySmash.Core.ViewModels
 {
@@ -18,7 +20,7 @@ namespace BabySmash.Core.ViewModels
 		private Timer timer;
 		public MainViewModel(IInteractionService interactionService, ISpeakService speakService, ILanguageService languageService)
 		{
-			
+
 			if(interactionService == null)
 				throw new ArgumentNullException(nameof(interactionService));
 
@@ -38,7 +40,16 @@ namespace BabySmash.Core.ViewModels
 
 			this.interactionService.InteractionOccured += InteractionService_InteractionOccured;
 
+			//var assembly = typeof(MainViewModel).GetTypeInfo().Assembly;
+			//Stream stream = assembly.GetManifestResourceStream("BabySmash.Core.Data.ssml_default.xml");
+			//string text = "";
+			//using(var reader = new System.IO.StreamReader(stream)) {
+			//	text = reader.ReadToEnd();
+			//}
+
+			//this.speakService.SpeakSSML(text);
 		}
+
 	
 		public void Dispose()
 		{
@@ -152,9 +163,10 @@ namespace BabySmash.Core.ViewModels
 
 		private async void AddLetter(char letter)
 		{
-			AddShape(new BabyShapeLetter(letter));
+			var shape = new BabyShapeLetter(letter);
+			AddShape(shape);
 			if(Settings.Default.Speak)
-				await speakService.SpeakText(letter.ToString());
+				await this.speakService.SpeakSSML(this.languageService.GetLanguageTextForLetter(shape.ToString()));
 		}
 
 		private void AddNumber(int number)

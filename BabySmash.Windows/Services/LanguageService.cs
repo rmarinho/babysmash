@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BabySmash.Core.Models;
 using Windows.Media.SpeechSynthesis;
+using System.IO;
+using System.Reflection;
 
 namespace BabySmash.Windows.Services
 {
@@ -14,7 +16,18 @@ namespace BabySmash.Windows.Services
 		public LanguageService()
 		{
 			this.synthesizer = new SpeechSynthesizer();
+			GetDefaultSSML();
 		}
+
+		private void GetDefaultSSML()
+		{
+			var assembly = typeof(ILanguageService).GetTypeInfo().Assembly;
+			Stream stream = assembly.GetManifestResourceStream("BabySmash.Core.Data.ssml_default.xml");
+			using(var reader = new System.IO.StreamReader(stream)) {
+				this.defaultSSML = reader.ReadToEnd();
+			}
+		}
+
 		public Language DefaultLanguage
 		{
 			get
@@ -30,7 +43,7 @@ namespace BabySmash.Windows.Services
 
 		public string GetLanguageTextForLetter(string letter)
 		{
-			throw new NotImplementedException();
+			return string.Format(defaultSSML, letter);
 		}
 
 		public string GetLanguageTextForShape(string shape)
@@ -38,6 +51,7 @@ namespace BabySmash.Windows.Services
 			throw new NotImplementedException();
 		}
 
+		private string defaultSSML;
 		private SpeechSynthesizer synthesizer;
 		private Language defaultLanguage;
 		private List<Language> availableLanguages;

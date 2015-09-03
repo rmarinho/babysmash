@@ -1,0 +1,7 @@
+﻿<?xml version="1.0"?>
+<speak version="1.0"
+   xmlns="http://www.w3.org/2001/10/synthesis"
+   xml:lang="en-US"
+  >
+  <say-as interpret-as="characters" format="characters">{0}</say-as>
+</speak>
