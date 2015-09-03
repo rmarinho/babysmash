@@ -20,7 +20,7 @@
                     </StackPanel>
                 </DataTemplate>
 
-                <DataTemplate x:Key="glowText">
+                <DataTemplate x:Key="glowTextTemplate">
                     <controls:GlowTextCustomControl GlowAmount="10" MaxGlowAmount="30" 
                                                     AnimateGlow="True"
                                                     FontSize="150"
@@ -29,16 +29,28 @@
                                                     TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
                                                     />
-                    <!--<controls:CoolLetter Character="{Binding Letter}" BrushColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" />-->
+                    
+                    
                 </DataTemplate>
-
+                <DataTemplate x:Key="textTemplate1">
+                    <!--<controls:GlowShapeCustomControl 
+                                                    AnimateGlow="False"
+                                                    FontSize="50"
+                                                    IsEnabled="{Binding IsVisible,Mode=TwoWay}"
+                                                    Text="{Binding}"
+                                                    TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
+                                                    GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
+                                                    />-->
+                </DataTemplate>
+                <helpers:MyShapeTemplateSelector x:Key="myShapeTemplateSelector" TextTemplate="{StaticResource glowTextTemplate}" ShapeTemplate="{StaticResource textTemplate1}" />
+               
             </ResourceDictionary>
            
         </Grid.Resources>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Padding="20">
             <TextBlock Text="{Binding HelloMessage}"></TextBlock>     
         </StackPanel>
-        <ItemsControl ItemsSource="{Binding Shapes}" ItemTemplate="{StaticResource glowText}">
+        <ItemsControl ItemsSource="{Binding Shapes}" ItemTemplateSelector="{StaticResource myShapeTemplateSelector}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />

@@ -99,9 +99,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GlowBaseCustomControl.cs" />
+    <Compile Include="Controls\GlowShapeCustomControl.cs" />
     <Compile Include="Controls\GlowTextCustomControl.cs" />
     <Compile Include="Helpers\Animations.cs" />
     <Compile Include="Helpers\Converters.cs" />
+    <Compile Include="Helpers\MyShapeTemplateSelector.cs" />
     <Compile Include="Helpers\WinUtils.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
