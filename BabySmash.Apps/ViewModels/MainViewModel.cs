@@ -3,23 +3,23 @@ using BabySmash.Core.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
-using Xamarin.Forms;
-using System.Linq;
-using static BabySmash.Core.Utils;
-using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
+using Xamarin.Forms;
+using static BabySmash.Core.Utils;
 
 namespace BabySmash.Core.ViewModels
 {
 	public class MainViewModel : BaseViewModel, IDisposable
 	{
+		private const string introSound = "BabySmash.Core.Data.Sounds.EditedJackPlaysBabySmash.wav";
 		private const int timerDelay = 30 * 1000;
 		private IInteractionService interactionService;
 		private ISpeakService speakService;
+		private ISoundService soundService;
 		private ILanguageService languageService;
 		private Timer timer;
-		public MainViewModel(IInteractionService interactionService, ISpeakService speakService, ILanguageService languageService)
+		private bool disposed;
+		public MainViewModel(IInteractionService interactionService, ISoundService soundService, ISpeakService speakService, ILanguageService languageService)
 		{
 
 			if(interactionService == null)
@@ -31,7 +31,11 @@ namespace BabySmash.Core.ViewModels
 			if(languageService == null)
 				throw new ArgumentNullException(nameof(languageService));
 
+			if(soundService == null)
+				throw new ArgumentNullException(nameof(soundService));
+
 			this.interactionService = interactionService;
+			this.soundService = soundService;
 			this.speakService = speakService;
 			this.languageService = languageService;
 
@@ -41,11 +45,16 @@ namespace BabySmash.Core.ViewModels
 
 			this.interactionService.InteractionOccured += InteractionService_InteractionOccured;
 
+			//play the intro sound
+			this.soundService.PlayEmbebedResourceAsync(introSound);
 		}
-
 	
 		public void Dispose()
 		{
+			if(this.disposed)
+				return;
+			this.disposed = true;
+
 			if(this.timer != null) {
 				this.timer.Dispose();
 				this.timer = null;
@@ -73,7 +82,6 @@ namespace BabySmash.Core.ViewModels
 				SetField(ref this._helloMessage, value);
 			}
 		}
-
 
 		private ObservableCollection<BabyShape> _shapes = new ObservableCollection<BabyShape>();
 		public ObservableCollection<BabyShape> Shapes
@@ -183,13 +191,12 @@ namespace BabySmash.Core.ViewModels
 			var x = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableWidth - shape.Size.Width));
 			var y = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableHeight - shape.Size.Height));
 			shape.Position = new Point(x, y);
-    
-			
+    		
 			
 			// var nameFunc = hashTableOfFigureGenerators[Utils.RandomBetweenTwoNumbers(0, hashTableOfFigureGenerators.Count - 1)];
 			Shapes.Add(shape);
 			if(Settings.Default.Speak)
-				await this.speakService.SpeakSSML(this.languageService.GetLanguageTextForLetter(shape.ToString()));
+				await this.speakService.SpeakSSMLAsync(this.languageService.GetLanguageTextForLetter(shape.ToString()));
 		}
 
 		

@@ -39,6 +39,7 @@
     <Compile Include="BabySmash.cs" />
     <Compile Include="Services\IInteractionService.cs" />
     <Compile Include="Services\ILanguageService.cs" />
+    <Compile Include="Services\ISoundService.cs" />
     <Compile Include="Services\ISpeakService.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -79,6 +80,38 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\ssml_default.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Sounds\babygigl2.wav">
+      <Link>Data\Sounds\babygigl2.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\babylaugh.wav">
+      <Link>Data\Sounds\babylaugh.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\ccgiggle.wav">
+      <Link>Data\Sounds\ccgiggle.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\EditedJackPlaysBabySmash.wav">
+      <Link>Data\Sounds\EditedJackPlaysBabySmash.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\falling.wav">
+      <Link>Data\Sounds\falling.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\giggle.wav">
+      <Link>Data\Sounds\giggle.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\laughingmice.wav">
+      <Link>Data\Sounds\laughingmice.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\rising.wav">
+      <Link>Data\Sounds\rising.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\scooby2.wav">
+      <Link>Data\Sounds\scooby2.wav</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Resources\Sounds\smallbumblebee.wav">
+      <Link>Data\Sounds\smallbumblebee.wav</Link>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

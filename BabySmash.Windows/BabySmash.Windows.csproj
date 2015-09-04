@@ -113,6 +113,7 @@
     <Compile Include="Services\InteractionService.cs" />
     <Compile Include="Helpers\SettingValueBindingHelper.cs" />
     <Compile Include="Services\LanguageService.cs" />
+    <Compile Include="Services\SoundService.cs" />
     <Compile Include="Services\SpeakService.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>

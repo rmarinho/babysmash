@@ -9,10 +9,9 @@ namespace BabySmash.Core.Services
 {
 	public interface ISpeakService : IDisposable
 	{
-		Task SpeakText(string text);
-		Task SpeakSSML(string text);
-		Task SpeakUriStream(Uri url);
-
+		Task SpeakTextAsync(string text);
+		Task SpeakSSMLAsync(string text);
+		Task SpeakUriStreamAsync(Uri url);
 		void SetLanguage(Language language);
 	}
 }
