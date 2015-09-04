@@ -7,9 +7,9 @@ using Xamarin.Forms;
 
 namespace BabySmash.Core.Models
 {
-	public class BabyShape
+	public class Figure
 	{
-		public BabyShape()
+		public Figure()
 		{
 			IsVisible = true;
 		}
@@ -51,9 +51,9 @@ namespace BabySmash.Core.Models
 
 	}
 
-	public class BabyShapeLetter : BabyShape
+	public class LetterFigure : Figure
 	{
-		public BabyShapeLetter(char letter) 
+		public LetterFigure(char letter) 
 		{
 			this.Letter = letter;
 		}
@@ -69,9 +69,9 @@ namespace BabySmash.Core.Models
 		}
 	}
 
-	public class BabyShapeNumber : BabyShape
+	public class NumberFigure : Figure
 	{
-		public BabyShapeNumber(int number)
+		public NumberFigure(int number)
 		{
 			this.Number = number;
 		}
@@ -87,9 +87,9 @@ namespace BabySmash.Core.Models
 		}
 	}
 
-	public class BabyShapeFigure : BabyShape
+	public class ShapeFigure : Figure
 	{
-		public BabyShapeFigure()
+		public ShapeFigure()
 		{
 			ShapeName = Utils.GetRandomShape();
 		}

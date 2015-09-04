@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace BabySmash.Windows.Helpers
 {
-	public class MyShapeTemplateSelector : DataTemplateSelector
+	public class FigureTemplateSelector : DataTemplateSelector
 	{
 		public DataTemplate TextTemplate
 		{
@@ -22,9 +22,9 @@ namespace BabySmash.Windows.Helpers
 
 		protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
 		{
-			if(item is BabyShapeLetter || item is BabyShapeNumber)
+			if(item is LetterFigure || item is NumberFigure)
 				return TextTemplate;
-			if(item is BabyShapeFigure)
+			if(item is ShapeFigure)
 				return ShapeTemplate;
 
 			return base.SelectTemplateCore(item, container);

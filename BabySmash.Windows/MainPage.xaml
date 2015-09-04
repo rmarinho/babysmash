@@ -42,7 +42,7 @@
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
                                                     />-->
                 </DataTemplate>
-                <helpers:MyShapeTemplateSelector x:Key="myShapeTemplateSelector" TextTemplate="{StaticResource glowTextTemplate}" ShapeTemplate="{StaticResource textTemplate1}" />
+                <helpers:FigureTemplateSelector x:Key="myFigureTemplateSelector" TextTemplate="{StaticResource glowTextTemplate}" ShapeTemplate="{StaticResource textTemplate1}" />
                
             </ResourceDictionary>
            
@@ -50,7 +50,7 @@
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Padding="20">
             <TextBlock Text="{Binding HelloMessage}"></TextBlock>     
         </StackPanel>
-        <ItemsControl ItemsSource="{Binding Shapes}" ItemTemplateSelector="{StaticResource myShapeTemplateSelector}" >
+        <ItemsControl ItemsSource="{Binding Figures}" ItemTemplateSelector="{StaticResource myFigureTemplateSelector}" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />

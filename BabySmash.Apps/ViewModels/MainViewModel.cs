@@ -40,7 +40,7 @@ namespace BabySmash.Core.ViewModels
 			this.languageService = languageService;
 
 			this.timer = new Timer((obj) => {
-				CheckShapesToRemove();
+				CheckFiguresToRemove();
 			}, null, timerDelay, timerDelay);
 
 			this.interactionService.InteractionOccured += InteractionService_InteractionOccured;
@@ -83,16 +83,16 @@ namespace BabySmash.Core.ViewModels
 			}
 		}
 
-		private ObservableCollection<BabyShape> _shapes = new ObservableCollection<BabyShape>();
-		public ObservableCollection<BabyShape> Shapes
+		private ObservableCollection<Figure> _figures = new ObservableCollection<Figure>();
+		public ObservableCollection<Figure> Figures
 		{
 			get
 			{
-				return _shapes;
+				return _figures;
 			}
 			set
 			{
-				SetField(ref _shapes, value);
+				SetField(ref _figures, value);
 			}
 		}
 	
@@ -116,7 +116,7 @@ namespace BabySmash.Core.ViewModels
 
 		private void Clear()
 		{
-			Shapes.Clear();
+			Figures.Clear();
 		}
 
 		private async Task ProcessKey(string key)
@@ -138,46 +138,46 @@ namespace BabySmash.Core.ViewModels
 				}
 			} else {
 				// Otherwise, display a random shape.
-				await AddShape(new BabyShapeFigure());
+				await AddFigureAsync(new ShapeFigure());
 			}
 
-			CheckShapesToRemove();
+			CheckFiguresToRemove();
 		}
 
-		private void CheckShapesToRemove()
+		private void CheckFiguresToRemove()
 		{
-			if(Shapes.Count >= Settings.Default.ClearAfter)
+			if(Figures.Count >= Settings.Default.ClearAfter)
 				Device.BeginInvokeOnMainThread(() => {
-					Shapes.RemoveAt(0);
+					Figures.RemoveAt(0);
 				});
 
-			for(int i = Shapes.Count-1; i >= 0; i--) {
-				var shape = Shapes[i];
+			for(int i = Figures.Count-1; i >= 0; i--) {
+				var shape = Figures[i];
 				if(!shape.IsVisible) {
 					Device.BeginInvokeOnMainThread(() => {
-						Shapes.Remove(shape);
+						Figures.Remove(shape);
 					});
 				}
 			}
 		}
 
-		private Task  AddLetter(char letter)
+		private Task AddLetter(char letter)
 		{
-			var shape = new BabyShapeLetter(letter);
-			return AddShape(shape);
+			var nl = new LetterFigure(letter);
+			return AddFigureAsync(nl);
 		}
 
 		private Task AddNumber(int number)
 		{
-			var shape = new BabyShapeNumber(number);
-			return AddShape(shape);
+			var nf = new NumberFigure(number);
+			return AddFigureAsync(nf);
 		}
 
-		private async Task AddShape(BabyShape shape)
+		private async Task AddFigureAsync(Figure figure)
 		{
 
-		    shape.StrokeColor = GetRandomColor();
-			shape.FillColor = GetRandomColor();
+		    figure.StrokeColor = GetRandomColor();
+			figure.FillColor = GetRandomColor();
 
 			//TODO: what should this be
 			var shapeWidth = Settings.Default.FontSize;
@@ -187,16 +187,16 @@ namespace BabySmash.Core.ViewModels
 			var availableWidth = 1000;
 			var availableHeight = 700;
 
-			shape.Size = new Size(shapeWidth, shapeHeight);
-			var x = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableWidth - shape.Size.Width));
-			var y = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableHeight - shape.Size.Height));
-			shape.Position = new Point(x, y);
+			figure.Size = new Size(shapeWidth, shapeHeight);
+			var x = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableWidth - figure.Size.Width));
+			var y = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableHeight - figure.Size.Height));
+			figure.Position = new Point(x, y);
     		
 			
 			// var nameFunc = hashTableOfFigureGenerators[Utils.RandomBetweenTwoNumbers(0, hashTableOfFigureGenerators.Count - 1)];
-			Shapes.Add(shape);
+			Figures.Add(figure);
 			if(Settings.Default.Speak)
-				await this.speakService.SpeakSSMLAsync(this.languageService.GetLanguageTextForLetter(shape.ToString()));
+				await this.speakService.SpeakSSMLAsync(this.languageService.GetLanguageTextForLetter(figure.ToString()));
 		}
 
 		

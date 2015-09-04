@@ -104,14 +104,14 @@
     <Compile Include="Controls\GlowTextCustomControl.cs" />
     <Compile Include="Helpers\Animations.cs" />
     <Compile Include="Helpers\Converters.cs" />
-    <Compile Include="Helpers\MyShapeTemplateSelector.cs" />
+    <Compile Include="Helpers\FigureTemplateSelector.cs" />
     <Compile Include="Helpers\WinUtils.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\InteractionService.cs" />
-    <Compile Include="Helpers\SettingValueBindingHelper.cs" />
+    <Compile Include="Helpers\SetterValueBindingHelper.cs" />
     <Compile Include="Services\LanguageService.cs" />
     <Compile Include="Services\SoundService.cs" />
     <Compile Include="Services\SpeakService.cs" />

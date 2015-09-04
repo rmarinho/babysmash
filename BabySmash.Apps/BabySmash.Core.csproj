@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Models\BabyShape.cs" />
+    <Compile Include="Models\Figure.cs" />
     <Compile Include="Models\InteractionType.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Settings.cs" />
