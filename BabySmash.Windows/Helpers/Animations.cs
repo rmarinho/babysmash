@@ -17,6 +17,7 @@ namespace BabySmash.Windows.Helpers
 		{
 			if(st == null)
 				st = new Storyboard();
+
 			var d = new DoubleAnimation {
 				From = from,
 				To = to,
@@ -36,61 +37,57 @@ namespace BabySmash.Windows.Helpers
 
 		public static void ApplyRandomAnimationEffect(FrameworkElement fe, Duration duration)
 		{
+			fe.RenderTransformOrigin = new Point(0.5, 0.5);
+			var tf = (fe.RenderTransform as TransformGroup);
+			if(tf == null)
+				fe.RenderTransform = tf = new TransformGroup();
 			int e = Utils.RandomBetweenTwoNumbers(0, 3);
 			switch(e) {
 				case 0:
-				ApplyJiggle(fe, duration);
+				ApplyJiggle(tf, duration);
 				break;
 				case 1:
-				ApplySnap(fe, duration);
+				ApplySnap(tf, duration);
 				break;
 				case 2:
-				ApplyThrob(fe, duration);
+				ApplyThrob(tf, duration);
 				break;
 				case 3:
-				ApplyRotate(fe, duration);
+				ApplyRotate(tf, duration);
 				break;
 			}
 		}
 
-		public static void ApplyRotate(FrameworkElement fe, Duration duration)
+		public static void ApplyRotate(TransformGroup t, Duration duration)
 		{
-			fe.RenderTransformOrigin = new Point(0.5, 0.5);
-			fe.RenderTransform = new RotateTransform ();
-
-			var storyboard = CreateDPAnimation(fe.RenderTransform, "Angle", duration, 0, 360, false, false, new BounceEase { Bounces = 2, Bounciness = 5 });
-
+			var  rotateT = new RotateTransform ();
+			t.Children.Add(rotateT);
+			var storyboard = CreateDPAnimation(rotateT, "Angle", duration, 0, 360, false, false, new BounceEase { Bounces = 2, Bounciness = 5 });
 			storyboard.Begin();
 		}
 
-		public static void ApplyJiggle(FrameworkElement fe, Duration duration)
+		public static void ApplyJiggle(TransformGroup t, Duration duration)
 		{
-			fe.RenderTransformOrigin = new Point(0.5, 0.5);
-			fe.RenderTransform = new RotateTransform ();
-
-			var storyboard = CreateDPAnimation(fe.RenderTransform, "Angle", duration, 0, 20, false, false, new ElasticEase { Oscillations = 5 });
-			
+			var rotateT = new RotateTransform ();
+			t.Children.Add(rotateT);
+			var storyboard = CreateDPAnimation(rotateT, "Angle", duration, 0, 20, false, false, new ElasticEase { Oscillations = 5 });
 			storyboard.Begin();
 		}
 
-		public static void ApplySnap(FrameworkElement fe, Duration duration)
+		public static void ApplySnap(TransformGroup t, Duration duration)
 		{
-			fe.RenderTransformOrigin = new Point(0.5, 0.5);
-			fe.RenderTransform = new ScaleTransform { ScaleY = 1, ScaleX = 1 };
-
-			var storyboard = CreateDPAnimation(fe.RenderTransform, "ScaleY", duration, 0, 1, false, false, new ElasticEase {  Springiness = 0.4 });
-
+			var scaleT = new ScaleTransform { ScaleY = 1, ScaleX = 1 };
+			t.Children.Add(scaleT);
+			var storyboard = CreateDPAnimation(scaleT, "ScaleY", duration, 0, 1, false, false, new ElasticEase {  Springiness = 0.4 });
 			storyboard.Begin();
 		}
 
-		public static void ApplyThrob(FrameworkElement fe, Duration duration)
+		public static void ApplyThrob(TransformGroup t, Duration duration)
 		{
-			fe.RenderTransformOrigin = new Point(0.5, 0.5);
-			fe.RenderTransform = new ScaleTransform { ScaleY = 1, ScaleX = 1 };
-
-			var storyboard = CreateDPAnimation(fe.RenderTransform, "ScaleY", duration, 0.95, 1, false, false, new ElasticEase {  Springiness = 0.4 });
-			CreateDPAnimation(fe.RenderTransform, "ScaleX", duration, 0.95, 1, false, false, new ElasticEase { Springiness = 0.4 }, storyboard);
-
+			var scaleT = new ScaleTransform { ScaleY = 1, ScaleX = 1 };
+			t.Children.Add(scaleT);
+			var storyboard = CreateDPAnimation(scaleT, "ScaleY", duration, 0.95, 1, false, false, new ElasticEase { Springiness = 0.4 });
+			CreateDPAnimation(scaleT, "ScaleX", duration, 0.95, 1, false, false, new ElasticEase { Springiness = 0.4 }, storyboard);
 			storyboard.Begin();
 		}
 	}

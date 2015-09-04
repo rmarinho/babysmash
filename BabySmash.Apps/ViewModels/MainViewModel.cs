@@ -139,7 +139,9 @@ namespace BabySmash.Core.ViewModels
 		private void CheckShapesToRemove()
 		{
 			if(Shapes.Count >= Settings.Default.ClearAfter)
-				Shapes.RemoveAt(0);
+				Device.BeginInvokeOnMainThread(() => {
+					Shapes.RemoveAt(0);
+				});
 
 			for(int i = Shapes.Count-1; i >= 0; i--) {
 				var shape = Shapes[i];

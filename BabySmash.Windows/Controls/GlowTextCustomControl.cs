@@ -59,17 +59,35 @@ namespace BabySmash.Windows.Controls
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			canvas = new CanvasControl();
-			if(Settings.Default.UseAnimations)
-				ApplyRandomAnimationEffect(canvas, new Duration(TimeSpan.FromSeconds(1)));
 			canvas.Draw += OnDraw;
 			Content = canvas;
-			if(Settings.Default.UseAnimations && Settings.Default.FadeAway) {
-				var sFade = CreateDPAnimation(this, "Opacity",
-						  new Duration(TimeSpan.FromSeconds(Settings.Default.FadeAfter)), 1, 0);
-				sFade.Begin();
-				sFade.Completed += SFade_Completed;
-				
+
+			if(Settings.Default.UseAnimations) {
+				AddInitialAnimation();
+				if(Settings.Default.FadeAway)
+					AddFinalAnimation();
 			}
+		}
+
+		private void AddFinalAnimation()
+		{
+			var sFade = CreateDPAnimation(this, "Opacity", new Duration(TimeSpan.FromSeconds(Settings.Default.FadeAfter)), 1, 0);
+			sFade.Begin();
+			sFade.Completed += SFade_Completed;
+		}
+
+		private void AddInitialAnimation()
+		{
+			var tf = new TransformGroup();
+			canvas.RenderTransform = tf;
+
+			ApplyRandomAnimationEffect(canvas, new Duration(TimeSpan.FromSeconds(1)));
+
+			var scale = new ScaleTransform { ScaleX = 0, ScaleY = 0, CenterX = 0.5, CenterY = 0.5 };
+			tf.Children.Add(scale);
+			var sScale = CreateDPAnimation(scale, "ScaleY", new Duration(TimeSpan.FromSeconds(1)), 0, 1);
+			CreateDPAnimation(scale, "ScaleX", new Duration(TimeSpan.FromSeconds(1)), 0, 1, false, false, new SineEase(), sScale);
+			sScale.Begin();
 		}
 
 		private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -91,7 +109,6 @@ namespace BabySmash.Windows.Controls
 			Dispose();
 			this.IsEnabled = false;
 		}
-		
 		
 		private void OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
 		{
