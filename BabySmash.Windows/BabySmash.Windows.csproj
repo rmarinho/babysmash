@@ -150,7 +150,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BabySmash.Apps\BabySmash.Core.csproj">
+    <ProjectReference Include="..\BabySmash.Core\BabySmash.Core.csproj">
       <Project>{23fbf4a3-2bcb-4cd2-88a1-bac636c3912b}</Project>
       <Name>BabySmash.Core</Name>
     </ProjectReference>
