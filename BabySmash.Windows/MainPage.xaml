@@ -26,7 +26,7 @@
                                                     FontSize="150"
                                                     IsEnabled="{Binding IsVisible,Mode=TwoWay}"
                                                     Text="{Binding}"
-                                                    TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
+                                                    ForegroundColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
                                                     />
                     
@@ -37,7 +37,7 @@
                                                     AnimateGlow="False"
                                                     ShapeType="{Binding Type}"
                                                     IsEnabled="{Binding IsVisible,Mode=TwoWay}"
-                                                    TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
+                                                    ForegroundColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
                                                     />
                 </DataTemplate>

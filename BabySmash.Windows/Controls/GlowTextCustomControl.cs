@@ -20,14 +20,10 @@ namespace BabySmash.Windows.Controls
 {
 	public sealed class GlowTextCustomControl : GlowBaseCustomControl
 	{
-	
-		private GlowEffectGraph glowEffectGraph = new GlowEffectGraph();
-		private CanvasControl canvas;
 
 		public GlowTextCustomControl()
 		{
 			Loaded += UserControl_Loaded;
-			Unloaded += UserControl_Unloaded;
 		}
 
 		protected override Size MeasureOverride(Size availableSize)
@@ -48,53 +44,13 @@ namespace BabySmash.Windows.Controls
 			return new Size(Math.Min(availableSize.Width, bounds.Width + ExpandAmount), Math.Min(availableSize.Height, bounds.Height + ExpandAmount));
 		}
 
-		protected override void PropertyChanged()
+		public override void PropertyChanged()
 		{
 			if(canvas != null) {
 				canvas.Invalidate();
 				InvalidateMeasure();
 			}
 		}
-	
-		private void UserControl_Loaded(object sender, RoutedEventArgs e)
-		{
-			canvas = new CanvasControl();
-			canvas.Draw += OnDraw;
-			Content = canvas;
-
-			if(Settings.Default.UseAnimations) {
-				AddInitialAnimation();
-				if(Settings.Default.FadeAway)
-					AddFinalAnimation();
-			}
-		}
-
-		private void AddFinalAnimation()
-		{
-			var sFade = CreateDPAnimation(this, "Opacity", new Duration(TimeSpan.FromSeconds(Settings.Default.FadeAfter)), 1, 0);
-			sFade.Begin();
-			sFade.Completed += SFade_Completed;
-		}
-
-		private void AddInitialAnimation()
-		{
-			var tf = new TransformGroup();
-			canvas.RenderTransform = tf;
-
-			ApplyRandomAnimationEffect(canvas, new Duration(TimeSpan.FromSeconds(1)));
-
-			var scale = new ScaleTransform { ScaleX = 0, ScaleY = 0, CenterX = 0.5, CenterY = 0.5 };
-			tf.Children.Add(scale);
-			var sScale = CreateDPAnimation(scale, "ScaleY", new Duration(TimeSpan.FromSeconds(1)), 0, 1);
-			CreateDPAnimation(scale, "ScaleX", new Duration(TimeSpan.FromSeconds(1)), 0, 1, false, false, new SineEase(), sScale);
-			sScale.Begin();
-		}
-
-		private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-		{
-			Dispose();
-		}
-
 		public override void Dispose()
 		{
 			// Explicitly remove references to allow the Win2D controls to get garbage collected
@@ -102,14 +58,19 @@ namespace BabySmash.Windows.Controls
 				canvas.RemoveFromVisualTree();
 				canvas = null;
 			}
+			base.Dispose();
 		}
 
-		private void SFade_Completed(object sender, object e)
+		private GlowEffectGraph glowEffectGraph = new GlowEffectGraph();
+		private CanvasControl canvas;
+
+		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			Dispose();
-			this.IsEnabled = false;
+			canvas = new CanvasControl();
+			canvas.Draw += OnDraw;
+			Content = canvas;
 		}
-		
+	
 		private void OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
 		{
 			DoEffect(args.DrawingSession, sender.Size, (float) GlowAmount);
@@ -132,7 +93,7 @@ namespace BabySmash.Windows.Controls
 					ds.DrawImage(glowEffectGraph.Output, offset, offset);
 				}
 
-				ds.DrawTextLayout(textLayout, offset, offset, TextColor);
+				ds.DrawTextLayout(textLayout, offset, offset, ForegroundColor);
 			}
 		}
 
