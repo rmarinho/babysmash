@@ -1,0 +1,99 @@
+﻿<Window x:Class="BabySmash.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:BabySmash"
+    Title="Baby Smash by Scott Hanselman - http://www.hanselman.com/babysmash"
+    Height="500" Width="500"  WindowStyle="None" HorizontalAlignment="Center" VerticalAlignment="Center"
+        AllowsTransparency="True">
+
+<Window.Resources>
+    <Storyboard x:Key="Timeline1" Timeline.DesiredFrameRate="10">
+        <ColorAnimationUsingKeyFrames BeginTime="00:00:00" RepeatBehavior="Forever" 
+                                      AutoReverse="True" Storyboard.TargetName="UpdateGlow" 
+                                      Storyboard.TargetProperty="GlowColor" >
+            <SplineColorKeyFrame Value="#FFCDCDCD" KeyTime="00:00:00"/>
+            <SplineColorKeyFrame Value="#FFB92121" KeyTime="00:00:01"/>
+            <SplineColorKeyFrame Value="#FF2921B9" KeyTime="00:00:02"/>
+        </ColorAnimationUsingKeyFrames>
+    </Storyboard>
+</Window.Resources>
+
+<Window.Triggers>
+    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+        <BeginStoryboard Storyboard="{StaticResource Timeline1}"/>
+    </EventTrigger>
+    <EventTrigger RoutedEvent="FrameworkElement.Loaded"/>
+</Window.Triggers>
+
+
+    <!--<Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard RepeatBehavior="Forever">
+                        <ColorAnimation
+                     AutoReverse="True"
+                     Duration="0:0:9"
+                     From="#00822121"
+                     Storyboard.TargetName="GradientStop1"
+                     Storyboard.TargetProperty="Color"
+                     Timeline.DesiredFrameRate="10"
+                     To="#FFFFFFFF"/>
+                        <ColorAnimation
+                     AutoReverse="True"
+                     Duration="0:0:9"
+                     From="AntiqueWhite"
+                     Storyboard.TargetName="GradientStop2"
+                     Storyboard.TargetProperty="Color"
+                     Timeline.DesiredFrameRate="10"
+                     To="LightCoral"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Window.Background>
+        <RadialGradientBrush>
+            <RadialGradientBrush.RelativeTransform>
+                <TransformGroup>
+                    <ScaleTransform
+                  CenterX="0.5"
+                  CenterY="0.5"
+                  ScaleX="1.15"
+                  ScaleY="1.15"/>
+                    <TranslateTransform X="-0.08" Y="-0.08"/>
+                </TransformGroup>
+            </RadialGradientBrush.RelativeTransform>
+            <GradientStop x:Name="GradientStop1" Offset="0" Color="#0095B1FF"/>
+            <GradientStop x:Name="GradientStop2" Offset="1" Color="#FF719300"/>
+        </RadialGradientBrush>
+    </Window.Background>-->
+
+    <Grid Name="mainGrid">
+<StackPanel>
+            <TextBlock x:Name="infoLabel"   Margin="15,15,0,0" FontSize="12" Visibility="Hidden">
+            <TextBlock.BitmapEffect>
+               <BitmapEffectGroup>
+                  <OuterGlowBitmapEffect GlowColor="Yellow" GlowSize="3"/>
+               </BitmapEffectGroup>
+            </TextBlock.BitmapEffect>
+            <Bold>BabySmash!</Bold> by Scott Hanselman <Italic>with community contributions!</Italic> - http://www.babysmash.com 
+            <LineBreak/>
+            <Bold>Ctrl-Shift-Alt-O</Bold> for options, <Bold>ALT-F4</Bold> to exit
+         </TextBlock>
+            <TextBlock x:Name="UpdateAvailableLabel" Visibility="Hidden" Margin="15,10,0,0" FontSize="12">
+            <TextBlock.BitmapEffect>
+               <BitmapEffectGroup>
+                  <OuterGlowBitmapEffect x:Name="UpdateGlow" GlowColor="Red" GlowSize="3"/>
+               </BitmapEffectGroup>
+            </TextBlock.BitmapEffect>
+            <Bold>Updating BabySmash in the background...</Bold>
+            <ProgressBar HorizontalAlignment="Left" x:Name="updateProgress" Value="0" Minimum="0" Maximum="100" Margin="0,0,0,0"  Height="10" Width="130"/>
+         </TextBlock>
+        </StackPanel>
+        <Canvas Name="figuresCanvas"/>
+        <Canvas Name="mouseDragCanvas"/>
+        <Canvas Name="mouseCursorCanvas"/>
+	</Grid>
+</Window>
