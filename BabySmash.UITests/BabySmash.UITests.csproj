@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,13 +42,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\iOS\BabySmash.iOS.csproj">
+    <ProjectReference Include="..\BabySmash.iOS\BabySmash.iOS.csproj">
       <Project>{532E9DBA-2FAD-484F-BBCF-2B43C8F69D58}</Project>
       <Name>BabySmash.iOS</Name>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Droid\BabySmash.Droid.csproj">
+    <ProjectReference Include="..\BabySmash.Droid\BabySmash.Droid.csproj">
       <Project>{78C989DF-6708-4496-A194-A291CA8537DA}</Project>
       <Name>BabySmash.Droid</Name>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
