@@ -33,14 +33,13 @@
                     
                 </DataTemplate>
                 <DataTemplate x:Key="textTemplate1">
-                    <!--<controls:GlowShapeCustomControl 
+                    <controls:GlowShapeCustomControl 
                                                     AnimateGlow="False"
-                                                    FontSize="50"
+                                                    ShapeType="{Binding Type}"
                                                     IsEnabled="{Binding IsVisible,Mode=TwoWay}"
-                                                    Text="{Binding}"
                                                     TextColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
-                                                    />-->
+                                                    />
                 </DataTemplate>
                 <helpers:FigureTemplateSelector x:Key="myFigureTemplateSelector" TextTemplate="{StaticResource glowTextTemplate}" ShapeTemplate="{StaticResource textTemplate1}" />
                

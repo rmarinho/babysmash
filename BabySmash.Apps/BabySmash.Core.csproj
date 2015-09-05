@@ -35,6 +35,7 @@
     <Compile Include="Models\InteractionType.cs" />
     <Compile Include="Models\Language.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Models\ShapeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BabySmash.cs" />
     <Compile Include="Services\IInteractionService.cs" />

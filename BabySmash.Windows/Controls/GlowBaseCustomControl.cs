@@ -14,7 +14,7 @@ using static BabySmash.Windows.Helpers.Animations;
 
 namespace BabySmash.Windows.Controls
 {
-	public class GlowBaseCustomControl : UserControl
+	public class GlowBaseCustomControl : UserControl, IDisposable
 	{
 		#region Properties
 
@@ -164,6 +164,11 @@ namespace BabySmash.Windows.Controls
 		protected virtual void PropertyChanged()
 		{
 
+		}
+
+		public virtual void Dispose()
+		{
+			
 		}
 
 		// This is the amount that we grow the desired size by (to account for the glow)

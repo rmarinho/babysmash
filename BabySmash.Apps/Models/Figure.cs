@@ -91,17 +91,17 @@ namespace BabySmash.Core.Models
 	{
 		public ShapeFigure()
 		{
-			ShapeName = Utils.GetRandomShape();
+			Type = Utils.GetRandomShape();
 		}
 
-		public string ShapeName
+		public ShapeType Type
 		{
 			get; set;
 		}
 
 		public override string ToString()
 		{
-			return ShapeName;
+			return Type.ToString();
 		}
 	}
 }

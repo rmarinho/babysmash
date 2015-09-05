@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BabySmash.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,8 @@ namespace BabySmash.Core
 				base.Dispose(disposing);
 			}
 		}
-		private static readonly List<string> shapes;
+
+		private static readonly List<ShapeType> shapes;
 		private static readonly Dictionary<Color, string> brushToString;
 		private static readonly Random lRandom = new Random(); // BUG BUG: Believe it or not, Random is NOT THREAD SAFE!
 		private static readonly Color[] someColors;
@@ -56,17 +58,7 @@ namespace BabySmash.Core
 
 		static Utils()
 		{
-			shapes = new List<string> {
-					"Circle",
-					"Oval",
-					"Rectangle",
-					"Hexagon",
-					"Trapezoid",
-					"Star",
-					"Square",
-					"Triangle",
-					"Heart",
-			};
+			shapes = GetEnumAsList<ShapeType>();
 
 			brushToString = new Dictionary<Color, string>
 								   {
@@ -109,7 +101,7 @@ namespace BabySmash.Core
 			return sounds[lRandom.Next(0, sounds.Length)];
 		}
 
-		public static string GetRandomShape()
+		public static ShapeType GetRandomShape()
 		{
 			return shapes[lRandom.Next(0, shapes.Count)];
 		}
@@ -125,5 +117,10 @@ namespace BabySmash.Core
 		{
 			return lRandom.Next(min, max + 1);
 		}
+
+		public static List<T> GetEnumAsList<T>()
+        {
+            return Enum.GetValues(typeof(T)).Cast<T>().ToList();
+        }
 	}
 }

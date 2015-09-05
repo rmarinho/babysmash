@@ -95,7 +95,7 @@ namespace BabySmash.Windows.Controls
 			Dispose();
 		}
 
-		private void Dispose()
+		public override void Dispose()
 		{
 			// Explicitly remove references to allow the Win2D controls to get garbage collected
 			if(canvas != null) {
