@@ -8,6 +8,8 @@ using BabySmash.Core.Models;
 using Windows.Media.SpeechSynthesis;
 using System.IO;
 using System.Reflection;
+using System.Resources;
+using System.Globalization;
 
 namespace BabySmash.Windows.Services
 {
@@ -16,16 +18,8 @@ namespace BabySmash.Windows.Services
 		public LanguageService()
 		{
 			this.synthesizer = new SpeechSynthesizer();
+			this.resourceManager = new ResourceManager("BabySmash.Core.Data.Languages.ResourcesBabySmash", typeof(ILanguageService).GetTypeInfo().Assembly);
 			GetDefaultSSML();
-		}
-
-		private void GetDefaultSSML()
-		{
-			var assembly = typeof(ILanguageService).GetTypeInfo().Assembly;
-			Stream stream = assembly.GetManifestResourceStream("BabySmash.Core.Data.ssml_default.xml");
-			using(var reader = new System.IO.StreamReader(stream)) {
-				this.defaultSSML = reader.ReadToEnd();
-			}
 		}
 
 		public Language DefaultLanguage
@@ -46,14 +40,30 @@ namespace BabySmash.Windows.Services
 			return string.Format(defaultSSML, letter);
 		}
 
-		public string GetLanguageTextForShape(string shape)
+		public string GetLanguageTextForShape(ShapeType shape)
 		{
-			throw new NotImplementedException();
+			var key = shape.ToString().ToLower();
+			return GetResourceText(key);
+		}
+
+		public string GetResourceText(string key)
+		{
+			string result = resourceManager.GetString (key, new CultureInfo (DefaultLanguage.Locale));
+			return result; 
 		}
 
 		private string defaultSSML;
 		private SpeechSynthesizer synthesizer;
 		private Language defaultLanguage;
 		private List<Language> availableLanguages;
+		private ResourceManager resourceManager;
+		private void GetDefaultSSML()
+		{
+			var assembly = typeof(ILanguageService).GetTypeInfo().Assembly;
+			Stream stream = assembly.GetManifestResourceStream("BabySmash.Core.Data.ssml_character_default.xml");
+			using(var reader = new System.IO.StreamReader(stream)) {
+				this.defaultSSML = reader.ReadToEnd();
+			}
+		}
 	}
 }

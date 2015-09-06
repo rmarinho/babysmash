@@ -31,6 +31,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Data\Languages\ResourcesBabySmash.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesBabySmash.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Languages\ResourcesBabySmash.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesBabySmash.pt.resx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Figure.cs" />
     <Compile Include="Models\InteractionType.cs" />
     <Compile Include="Models\Language.cs" />
@@ -79,40 +89,48 @@
     <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Data\ssml_default.xml">
+    <EmbeddedResource Include="Data\Languages\ResourcesBabySmash.pt.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesBabySmash.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Languages\ResourcesBabySmash.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesBabySmash.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\ssml_character_default.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Resources\Sounds\babygigl2.wav">
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\babygigl2.wav">
       <Link>Data\Sounds\babygigl2.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\babylaugh.wav">
+    </Content>
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\babylaugh.wav">
       <Link>Data\Sounds\babylaugh.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\ccgiggle.wav">
+    </Content>
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\ccgiggle.wav">
       <Link>Data\Sounds\ccgiggle.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\EditedJackPlaysBabySmash.wav">
+    </Content>
+    <EmbeddedResource Include="..\BabySmash.WPF\Resources\Sounds\EditedJackPlaysBabySmash.wav">
       <Link>Data\Sounds\EditedJackPlaysBabySmash.wav</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\falling.wav">
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\falling.wav">
       <Link>Data\Sounds\falling.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\giggle.wav">
+    </Content>
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\giggle.wav">
       <Link>Data\Sounds\giggle.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\laughingmice.wav">
+    </Content>
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\laughingmice.wav">
       <Link>Data\Sounds\laughingmice.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\rising.wav">
+    </Content>
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\rising.wav">
       <Link>Data\Sounds\rising.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\scooby2.wav">
+    </Content>
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\scooby2.wav">
       <Link>Data\Sounds\scooby2.wav</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Resources\Sounds\smallbumblebee.wav">
+    </Content>
+    <Content Include="..\BabySmash.WPF\Resources\Sounds\smallbumblebee.wav">
       <Link>Data\Sounds\smallbumblebee.wav</Link>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
 </Project>

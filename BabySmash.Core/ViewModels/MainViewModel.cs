@@ -11,6 +11,7 @@ namespace BabySmash.Core.ViewModels
 {
 	public class MainViewModel : BaseViewModel, IDisposable
 	{
+		private const string helloMessage = "helloMessage";
 		private const string introSound = "BabySmash.Core.Data.Sounds.EditedJackPlaysBabySmash.wav";
 		private const int timerDelay = 30 * 1000;
 		private IInteractionService interactionService;
@@ -70,16 +71,11 @@ namespace BabySmash.Core.ViewModels
 			}
 		}
 
-		private string _helloMessage ="BabySmash! by Scott Hanselman with community contributions! - http://www.babysmash.com ";
 		public string HelloMessage
 		{
 			get
 			{
-				return this._helloMessage;
-			}
-			set
-			{
-				SetField(ref this._helloMessage, value);
+				return this.languageService.GetResourceText(helloMessage);
 			}
 		}
 
@@ -176,7 +172,7 @@ namespace BabySmash.Core.ViewModels
 		private async Task AddFigureAsync(Figure figure)
 		{
 
-		    figure.StrokeColor = GetRandomColor();
+			figure.StrokeColor = GetRandomColor();
 			figure.FillColor = GetRandomColor();
 
 			//TODO: what should this be
@@ -191,14 +187,27 @@ namespace BabySmash.Core.ViewModels
 			var x = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableWidth - figure.Size.Width));
 			var y = RandomBetweenTwoNumbers(0, Convert.ToInt32(availableHeight - figure.Size.Height));
 			figure.Position = new Point(x, y);
-    		
-			
+
+
 			// var nameFunc = hashTableOfFigureGenerators[Utils.RandomBetweenTwoNumbers(0, hashTableOfFigureGenerators.Count - 1)];
 			Figures.Add(figure);
-			if(Settings.Default.Speak)
-				await this.speakService.SpeakSSMLAsync(this.languageService.GetLanguageTextForLetter(figure.ToString()));
+			await Speak(figure);
 		}
 
-		
+		private async Task Speak(Figure figure)
+		{
+			if(!Settings.Default.Speak)
+				return;
+
+			var shape = figure as ShapeFigure;
+			if(shape != null) {
+				var textToRead = this.languageService.GetLanguageTextForShape(shape.Type);
+				if(textToRead == null)
+					textToRead = shape.ToString();
+				await this.speakService.SpeakTextAsync(textToRead);
+			} else {
+				await this.speakService.SpeakSSMLAsync(this.languageService.GetLanguageTextForLetter(figure.ToString()));
+			}
+		}
 	}
 }
