@@ -7,14 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
-using static BabySmash.Windows.Helpers.Animations;
 
 namespace BabySmash.Windows.Controls
 {
@@ -40,7 +35,7 @@ namespace BabySmash.Windows.Controls
      		};
 
 			//Set default to the Heart shape
-			//Todo this should be a setting .. or not,  that should be handle on core.. this is just a control implementation
+			//TODO: this should be a setting .. or not,  that should be handle on core.. this is just a control implementation
 			this.DefaultShape = this.availableShapes.Last();			
 		}
 		
