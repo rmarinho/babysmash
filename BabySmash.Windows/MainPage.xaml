@@ -34,8 +34,11 @@
                 </DataTemplate>
                 <DataTemplate x:Key="textTemplate1">
                     <controls:GlowShapeCustomControl 
-                                                    AnimateGlow="False"
+                                                    AnimateGlow="True"
                                                     ShapeType="{Binding Type}"
+                                                    FontSize="20"
+                                                    Width="300"
+                                                    Height="300"
                                                     IsEnabled="{Binding IsVisible,Mode=TwoWay}"
                                                     ForegroundColor="{Binding FillColor, Converter={StaticResource formsColorConverter}}" 
                                                     GlowColor="{Binding StrokeColor, Converter={StaticResource formsColorConverter}}"
